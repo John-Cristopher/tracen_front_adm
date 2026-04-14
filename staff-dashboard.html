@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracen Academy - Dashboard Staff</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .bg-tracen {
+            background-color: #6741d9;
+        }
+
+        .text-tracen {
+            color: #6741d9;
+        }
+
+        .hover-tracen:hover {
+            background-color: #5634b8;
+        }
+
+        .bg-rose-tracen {
+            background-color: #e11d48;
+        }
+
+        .text-rose-tracen {
+            color: #e11d48;
+        }
+
+        .card-hover {
+            @apply transition-all hover:shadow-lg hover:scale-105 cursor-pointer;
+        }
+
+        .toast-success {
+            animation: slideInUp 0.3s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+        }
+
+        .toast-exit {
+            animation: slideOut 0.3s ease-in;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-white/20 p-2 rounded-lg">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 17v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.46z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold tracking-tighter">TRACEN <span class="font-light opacity-90">STAFF</span>
+                </h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="text-sm font-medium">Olá, <span id="staffName" class="font-bold">Diretor</span></span>
+                <button id="btnLogout"
+                    class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition-all">Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <!-- Header -->
+        <div class="mb-10">
+            <h2 class="text-4xl font-bold text-gray-800 mb-2">Painel de Controle</h2>
+            <p class="text-gray-600">Gerenciar alunos, disciplinas e eventos</p>
+        </div>
+
+        <!-- Estatísticas -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-blue-100 text-sm font-semibold">Total de Alunos</p>
+                        <p class="text-4xl font-bold mt-2" id="totalAlunos">0</p>
+                    </div>
+                    <svg class="w-8 h-8 opacity-20" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM9 10a1 1 0 00-1 1v5H3v-5a1 1 0 00-1-1H1a1 1 0 00-1 1v6a1 1 0 001 1h8a1 1 0 001-1v-6a1 1 0 00-1-1H9z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-green-100 text-sm font-semibold">Ativos</p>
+                        <p class="text-4xl font-bold mt-2" id="totalAtivos">0</p>
+                    </div>
+                    <svg class="w-8 h-8 opacity-20" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-red-100 text-sm font-semibold">Bloqueados</p>
+                        <p class="text-4xl font-bold mt-2" id="totalBloqueados">0</p>
+                    </div>
+                    <svg class="w-8 h-8 opacity-20" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M13.477 14.89A6 6 0 015.11 7.23m7.07 6.66A6 6 0 118.11 5.11m-5 6.66A6 6 0 1118.89 5.11"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-purple-100 text-sm font-semibold">Em Observação</p>
+                        <p class="text-4xl font-bold mt-2" id="totalObservacao">0</p>
+                    </div>
+                    <svg class="w-8 h-8 opacity-20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                        <path fill-rule="evenodd"
+                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtro de Status -->
+        <div class="mb-10">
+            <div class="bg-white p-6 rounded-2xl shadow-md">
+                <label class="block text-sm font-semibold text-gray-700 mb-3">Filtrar por Status</label>
+                <select id="statusFilter"
+                    class="w-full md:w-64 px-4 py-2 border-2 border-gray-300 rounded-xl focus:border-tracen focus:ring-2 focus:ring-purple-200 outline-none transition-all">
+                    <option value="">Todos os alunos</option>
+                    <option value="ativo">Ativos</option>
+                    <option value="bloqueado">Bloqueados</option>
+                    <option value="observacao">Em Observação</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Seção: Gerenciar Alunos -->
+        <div class="bg-white rounded-2xl shadow-md overflow-hidden mb-10">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-2xl font-bold text-gray-800 flex items-center gap-3">
+                    <span class="bg-tracen text-white p-2 rounded-lg">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10.5 1.5H5.75A2.75 2.75 0 003 4.25v11.5A2.75 2.75 0 005.75 18.5h8.5a2.75 2.75 0 002.75-2.75V6.5m-11-4v4m4-4v4m-8 4h14">
+                            </path>
+                        </svg>
+                    </span>
+                    Gerenciar Alunos
+                </h3>
+                <button id="btnAddStudent"
+                    class="bg-tracen text-white px-6 py-2 rounded-xl font-semibold hover:bg-purple-700 transition-all flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 10 10.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    + Adicionar Aluno
+                </button>
+            </div>
+
+            <!-- Barra de Busca -->
+            <div class="p-4 border-b border-gray-100 bg-gray-50">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar por nome ou CPF..."
+                    class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl outline-none focus:border-tracen focus:ring-2 focus:ring-purple-200 transition-all">
+            </div>
+
+            <!-- Tabela -->
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase">Nome</th>
+                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-600 uppercase">CPF</th>
+                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase">Status</th>
+                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase">Observação</th>
+                            <th class="px-6 py-4 text-center text-xs font-bold text-gray-600 uppercase">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTable" class="divide-y divide-gray-100">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Seção: Eventos -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+                        <span class="bg-tracen text-white p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v2h16V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a2 2 0 002 2h8a2 2 0 002-2H6zm12 3H2v6a2 2 0 002 2h12a2 2 0 002-2v-6z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        Próximos Eventos
+                    </h3>
+                    <button onclick="adicionarEvento()"
+                        class="bg-tracen text-white px-3 py-1 rounded-lg text-sm font-semibold hover:bg-purple-700 transition-all">
+                        + Evento
+                    </button>
+                </div>
+                <div id="eventosList" class="p-6 space-y-4">
+                    <p class="text-gray-500 text-center py-8">Nenhum evento cadastrado</p>
+                </div>
+            </div>
+
+            <!-- Atividades Recentes -->
+            <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-gray-800 flex items-center gap-3">
+                        <span class="bg-tracen text-white p-2 rounded-lg">
+                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm11 1H4v8h10V6z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        Atividade Recente
+                    </h3>
+                    <button onclick="adicionarAtividade()"
+                        class="bg-tracen text-white px-3 py-1 rounded-lg text-sm font-semibold hover:bg-purple-700 transition-all">
+                        + Atividade
+                    </button>
+                </div>
+                <div id="atividadesList" class="p-6 space-y-4 max-h-64 overflow-y-auto">
+                    <p class="text-gray-500 text-center py-8">Nenhuma atividade registrada</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal: Adicionar Aluno (Oculto) -->
+    <div id="modalAddStudent" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white p-8 rounded-3xl w-full max-w-md">
+            <h2 class="text-2xl font-bold mb-6">Cadastrar Nova Aluna</h2>
+            <form id="addStudentForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Nome Completo</label>
+                    <input type="text" required
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-tracen transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">CPF</label>
+                    <input type="text" required placeholder="000.000.000-00"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 outline-none focus:border-tracen transition-all">
+                </div>
+                <input type="hidden" id="cpfOriginal" value="">
+                <div class="flex gap-3 pt-4">
+                    <button type="button" id="btnCancelModal"
+                        class="flex-1 py-3 bg-gray-200 rounded-xl font-bold text-gray-600 hover:bg-gray-300 transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-3 bg-tracen text-white rounded-xl font-bold hover:bg-purple-700 transition-all shadow-lg">
+                        Adicionar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast de Sucesso -->
+    <div id="successToast"
+        class="hidden fixed bottom-6 right-6 toast-success bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 z-50 max-w-sm">
+        <svg class="w-6 h-6 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"></path>
+        </svg>
+        <span id="toastMessage" class="font-medium flex-1">Ação realizada com sucesso!</span>
+    </div>
+
+    <script src="../static/api-handler.js"></script>
+    <script>
+        // Elementos
+        const btnLogout = document.getElementById('btnLogout');
+        const btnAddStudent = document.getElementById('btnAddStudent');
+        const modalAddStudent = document.getElementById('modalAddStudent');
+        const btnCancelModal = document.getElementById('btnCancelModal');
+        const addStudentForm = document.getElementById('addStudentForm');
+        const searchInput = document.getElementById('searchInput');
+        const successToast = document.getElementById('successToast');
+        const toastMessage = document.getElementById('toastMessage');
+        const staffName = document.getElementById('staffName');
+        const studentTable = document.getElementById('studentTable');
+        const statusFilter = document.getElementById('statusFilter');
+        const eventosList = document.getElementById('eventosList');
+        const atividadesList = document.getElementById('atividadesList');
+
+        // Variáveis de dados (serão preenchidas pela API)
+        let alunos = [];
+        let alunosFiltrados = [];
+        let eventos = [];
+        let atividades = [];
+        let staffData = {
+            nome: 'Diretor',
+            email: 'diretor@tracen.com'
+        };
+
+        // Inicializar dashboard
+        async function inicializarDashboard() {
+            // Recuperar dados do staff
+            const staffEmail = localStorage.getItem('staffUser') || 'diretor@tracen.com';
+            staffData.email = staffEmail;
+
+            if (staffEmail.includes('diretor')) {
+                staffData.nome = 'Diretor';
+            } else if (staffEmail.includes('instrutor')) {
+                staffData.nome = 'Instrutor';
+            } else {
+                staffData.nome = 'Administrador';
+            }
+
+            staffName.textContent = staffData.nome;
+
+            // Carregar alunos da API
+            try {
+                alunos = await window.TracenAPI.obterAlunos();
+                alunosFiltrados = alunos;
+                preencherTabelaAlunos(alunos);
+            } catch (error) {
+                console.error('Erro ao carregar alunos:', error);
+                showToast('Erro ao carregar alunos');
+            }
+
+            // Carregar eventos e atividades (inicialmente vazios)
+            carregarEventosAtividades();
+
+            // Atualizar estatísticas
+            atualizarEstatisticas();
+        }
+
+        // Função para atualizar as estatísticas (números dos cards)
+        function atualizarEstatisticas() {
+            const totalAlunos = alunos.length;
+            const totalAtivos = alunos.filter(a => !a.bloqueado).length;
+            const totalBloqueados = alunos.filter(a => a.bloqueado).length;
+            const totalObservacao = alunos.filter(a => a.observacao && a.observacao.trim() !== '').length;
+
+            document.getElementById('totalAlunos').textContent = totalAlunos;
+            document.getElementById('totalAtivos').textContent = totalAtivos;
+            document.getElementById('totalBloqueados').textContent = totalBloqueados;
+            document.getElementById('totalObservacao').textContent = totalObservacao;
+        }
+
+        // Função para preencher a tabela com dados dos alunos
+        function preencherTabelaAlunos(listaAlunos) {
+            studentTable.innerHTML = '';
+
+            if (listaAlunos.length === 0) {
+                studentTable.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Nenhum aluno encontrado</td></tr>';
+                return;
+            }
+
+            listaAlunos.forEach((aluno) => {
+                const statusBadgeClass = aluno.bloqueado
+                    ? 'bg-rose-100 text-rose-tracen'
+                    : 'bg-green-100 text-green-700';
+                const statusText = aluno.bloqueado ? 'BLOQUEADO' : 'ATIVO';
+                const actionButtonClass = aluno.bloqueado
+                    ? 'text-green-600 hover:bg-green-100'
+                    : 'text-rose-tracen hover:bg-rose-100';
+                const actionButtonText = aluno.bloqueado ? 'Desbloquear' : 'Bloquear';
+                const observacao = aluno.observacao || '-';
+
+                const cpfFormatado = aluno.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50 transition-colors';
+                row.innerHTML = `
+                    <td class="px-6 py-4 font-semibold text-gray-800">${aluno.nome}</td>
+                    <td class="px-6 py-4 text-gray-600">${cpfFormatado}</td>
+                    <td class="px-6 py-4 text-center">
+                        <span class="${statusBadgeClass} px-3 py-1 rounded-full text-xs font-bold">${statusText}</span>
+                    </td>
+                    <td class="px-6 py-4 text-center text-sm text-gray-600">${observacao}</td>
+                    <td class="px-6 py-4 text-center flex gap-2 justify-center">
+                        <button class="text-tracen hover:bg-purple-100 px-3 py-1 rounded-lg text-xs font-bold transition-all" onclick="editarAluno('${aluno.cpf}')">Editar</button>
+                        <button class="text-blue-600 hover:bg-blue-100 px-3 py-1 rounded-lg text-xs font-bold transition-all" onclick="editarObservacao('${aluno.cpf}')">Obs</button>
+                        <button class="${actionButtonClass} px-3 py-1 rounded-lg text-xs font-bold transition-all" onclick="toggleBloqueio('${aluno.cpf}')">${actionButtonText}</button>
+                        <button class="text-red-600 hover:bg-red-100 px-3 py-1 rounded-lg text-xs font-bold transition-all" onclick="deletarAluno('${aluno.cpf}')">Deletar</button>
+                    </td>
+                `;
+                studentTable.appendChild(row);
+            });
+        }
+
+        // Filtrar alunos por status
+        function filtrarAlunos(status) {
+            if (!status) {
+                alunosFiltrados = alunos;
+            } else if (status === 'ativo') {
+                alunosFiltrados = alunos.filter(a => !a.bloqueado);
+            } else if (status === 'bloqueado') {
+                alunosFiltrados = alunos.filter(a => a.bloqueado);
+            } else if (status === 'observacao') {
+                alunosFiltrados = alunos.filter(a => a.observacao && a.observacao.trim() !== '');
+            }
+            preencherTabelaAlunos(alunosFiltrados);
+        }
+
+        // Editar aluno
+        function editarAluno(cpf) {
+            const cpfLimpo = cpf.replace(/\D/g, '');
+            const aluno = alunos.find(a => a.cpf.replace(/\D/g, '') === cpfLimpo);
+
+            if (!aluno) {
+                showToast('Aluno não encontrado');
+                return;
+            }
+
+            // Abrir modal com dados do aluno para edição
+            const nomeInput = addStudentForm.querySelector('input[type="text"]');
+            const cpfInput = addStudentForm.querySelector('input[placeholder="000.000.000-00"]');
+            const cpfOriginalField = document.getElementById('cpfOriginal');
+
+            nomeInput.value = aluno.nome;
+            cpfInput.value = aluno.cpf;
+            cpfInput.disabled = true;
+            cpfInput.required = false;
+            cpfOriginalField.value = cpfLimpo;
+
+            const submitButton = addStudentForm.querySelector('button[type="submit"]');
+            submitButton.textContent = 'Atualizar';
+            submitButton.dataset.modo = 'editar';
+            submitButton.dataset.cpf = cpfLimpo;
+
+            modalAddStudent.classList.remove('hidden');
+        }
+
+        // Deletar aluno
+        async function deletarAluno(cpf) {
+            const cpfLimpo = cpf.replace(/\D/g, '');
+            const aluno = alunos.find(a => a.cpf.replace(/\D/g, '') === cpfLimpo);
+
+            if (!aluno) {
+                showToast('Aluno não encontrado');
+                return;
+            }
+
+            if (confirm(`Tem certeza que deseja deletar ${aluno.nome}? Esta ação não pode ser desfeita.`)) {
+                try {
+                    console.log('Deletando aluno com CPF:', cpfLimpo);
+                    await window.TracenAPI.deletarAluno(cpfLimpo);
+
+                    showToast('Aluno deletado com sucesso!');
+                    alunos = alunos.filter(a => a.cpf.replace(/\D/g, '') !== cpfLimpo);
+                    atualizarEstatisticas();
+                    filtrarAlunos(statusFilter.value);
+                } catch (error) {
+                    console.error('Erro ao deletar aluno:', error);
+                    showToast('Erro ao deletar aluno. Verifique o console.');
+                }
+            }
+        }
+
+        // Toggle bloqueio/desbloqueio
+        async function toggleBloqueio(cpf) {
+            const cpfLimpo = cpf.replace(/\D/g, ''); // Remove formatação
+            const aluno = alunos.find(a => a.cpf.replace(/\D/g, '') === cpfLimpo);
+
+            if (!aluno) {
+                showToast('Aluno não encontrado');
+                console.error('Aluno não encontrado com CPF:', cpf);
+                return;
+            }
+
+            try {
+                const novoStatus = !aluno.bloqueado;
+                console.log('Enviando dados:', { cpf: cpfLimpo, bloqueado: novoStatus });
+
+                await window.TracenAPI.atualizarAluno(cpfLimpo, { bloqueado: novoStatus });
+
+                aluno.bloqueado = novoStatus;
+                const acao = novoStatus ? 'bloqueado' : 'desbloqueado';
+                showToast(`Aluno ${acao} com sucesso!`);
+                atualizarEstatisticas();
+                filtrarAlunos(statusFilter.value);
+            } catch (error) {
+                console.error('Erro ao atualizar bloqueio:', error);
+                showToast('Erro ao atualizar status do aluno. Verifique o console.');
+            }
+        }
+
+        // Editar observação do aluno
+        async function editarObservacao(cpf) {
+            const cpfLimpo = cpf.replace(/\D/g, '');
+            const aluno = alunos.find(a => a.cpf.replace(/\D/g, '') === cpfLimpo);
+
+            if (!aluno) {
+                showToast('Aluno não encontrado');
+                return;
+            }
+
+            const novaObservacao = prompt(`Observação para ${aluno.nome}:`, aluno.observacao || '');
+
+            if (novaObservacao === null) return; // Cancelou
+
+            try {
+                console.log('Atualizando observação:', { cpf: cpfLimpo, observacao: novaObservacao });
+                await window.TracenAPI.atualizarAluno(cpfLimpo, { observacao: novaObservacao });
+
+                aluno.observacao = novaObservacao;
+                showToast('Observação atualizada com sucesso!');
+                atualizarEstatisticas();
+                filtrarAlunos(statusFilter.value);
+            } catch (error) {
+                console.error('Erro ao atualizar observação:', error);
+                showToast('Erro ao atualizar observação. Verifique o console.');
+            }
+        }
+
+        // Funções de Eventos e Atividades
+        function carregarEventosAtividades() {
+            atualizarListaEventos();
+            atualizarListaAtividades();
+        }
+
+        function atualizarListaEventos() {
+            eventosList.innerHTML = '';
+            if (eventos.length === 0) {
+                eventosList.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhum evento cadastrado</p>';
+                return;
+            }
+
+            eventos.forEach((evento, index) => {
+                const eventoCard = document.createElement('div');
+                eventoCard.className = 'border-l-4 border-tracen pl-4 pb-4';
+                eventoCard.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-800">${evento.nome}</h4>
+                            <p class="text-sm text-gray-600 mt-1">${evento.data} • ${evento.hora}</p>
+                        </div>
+                        <button onclick="deletarEvento(${index})" class="text-red-600 hover:bg-red-100 px-2 py-1 rounded text-xs">Deletar</button>
+                    </div>
+                `;
+                eventosList.appendChild(eventoCard);
+            });
+        }
+
+        function atualizarListaAtividades() {
+            atividadesList.innerHTML = '';
+            if (atividades.length === 0) {
+                atividadesList.innerHTML = '<p class="text-gray-500 text-center py-8">Nenhuma atividade registrada</p>';
+                return;
+            }
+
+            atividades.forEach((atividade, index) => {
+                const atividadeDiv = document.createElement('div');
+                atividadeDiv.className = 'flex gap-3 pb-4 border-b border-gray-100';
+
+                const iconColor = atividade.tipo === 'entrada' ? 'green' : atividade.tipo === 'nota' ? 'blue' : 'rose';
+                const iconBg = `bg-${iconColor}-100`;
+                const iconColor2 = `text-${iconColor}-600`;
+
+                atividadeDiv.innerHTML = `
+                    <div class="${iconBg} p-2 rounded-full">
+                        <svg class="w-5 h-5 ${iconColor2}" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-gray-800">${atividade.descricao}</p>
+                        <p class="text-xs text-gray-500">${atividade.tempo}</p>
+                    </div>
+                    <button onclick="deletarAtividade(${index})" class="text-red-600 hover:bg-red-100 px-2 py-1 rounded text-xs">X</button>
+                `;
+                atividadesList.appendChild(atividadeDiv);
+            });
+        }
+
+        function adicionarEvento() {
+            const nome = prompt('Nome do evento:');
+            if (!nome) return;
+
+            const data = prompt('Data (DD/MM/YYYY):');
+            if (!data) return;
+
+            const hora = prompt('Hora (HH:MM):');
+            if (!hora) return;
+
+            eventos.push({ nome, data, hora });
+            atualizarListaEventos();
+            showToast('Evento adicionado com sucesso!');
+        }
+
+        function deletarEvento(index) {
+            eventos.splice(index, 1);
+            atualizarListaEventos();
+            showToast('Evento removido!');
+        }
+
+        function adicionarAtividade() {
+            const descricao = prompt('Descrição da atividade:');
+            if (!descricao) return;
+
+            atividades.unshift({
+                descricao,
+                tipo: 'evento',
+                tempo: 'Agora mesmo'
+            });
+            atualizarListaAtividades();
+            showToast('Atividade adicionada com sucesso!');
+        }
+
+        function deletarAtividade(index) {
+            atividades.splice(index, 1);
+            atualizarListaAtividades();
+            showToast('Atividade removida!');
+        }
+
+        // Recuperar nome do staff
+        const staffEmail = localStorage.getItem('staffUser') || 'admin@tracen.com';
+        if (staffEmail.includes('diretor')) {
+            staffName.textContent = 'Diretor';
+        } else if (staffEmail.includes('instrutor')) {
+            staffName.textContent = 'Instrutor';
+        }
+
+        // Logout
+        btnLogout.addEventListener('click', () => {
+            localStorage.removeItem('staffUser');
+            window.location.href = 'staff-login.html';
+        });
+
+        // Abrir Modal
+        btnAddStudent.addEventListener('click', () => {
+            // Resetar para modo de criação
+            addStudentForm.reset();
+            const cpfInput = addStudentForm.querySelector('input[placeholder="000.000.000-00"]');
+            cpfInput.disabled = false;
+            cpfInput.required = true;
+            document.getElementById('cpfOriginal').value = '';
+
+            const submitButton = addStudentForm.querySelector('button[type="submit"]');
+            submitButton.textContent = 'Adicionar';
+            submitButton.dataset.modo = 'criar';
+            submitButton.dataset.cpf = '';
+
+            modalAddStudent.classList.remove('hidden');
+        });
+
+        // Fechar Modal
+        btnCancelModal.addEventListener('click', () => {
+            modalAddStudent.classList.add('hidden');
+        });
+
+        // Adicionar/Atualizar Aluno
+        addStudentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Obter dados do formulário
+            const nome = addStudentForm.querySelector('input[type="text"]').value.trim();
+            const cpfInput = addStudentForm.querySelector('input[placeholder="000.000.000-00"]').value;
+            const cpfLimpo = cpfInput.replace(/\D/g, ''); // Remove tudo que não é dígito
+            const cpfOriginal = document.getElementById('cpfOriginal').value;
+            const submitButton = addStudentForm.querySelector('button[type="submit"]');
+            const modo = submitButton.dataset.modo;
+
+            if (!nome) {
+                showToast('Por favor, preencha o nome do aluno');
+                return;
+            }
+
+            if (modo === 'criar' && !cpfLimpo) {
+                showToast('Por favor, preencha o CPF do aluno');
+                return;
+            }
+
+            try {
+                if (modo === 'criar') {
+                    // Criar novo aluno
+                    console.log('Criando aluno:', { cpf: cpfLimpo, nome });
+                    const novoAluno = { cpf: cpfLimpo, nome };
+                    await window.TracenAPI.criarAluno(cpfLimpo, nome);
+                    alunos.push(novoAluno);
+                    showToast('Aluno cadastrado com sucesso!');
+                } else if (modo === 'editar') {
+                    // Atualizar aluno usando o CPF original
+                    console.log('Atualizando aluno:', { cpf: cpfOriginal, nome });
+                    await window.TracenAPI.atualizarAluno(cpfOriginal, { nome });
+
+                    const aluno = alunos.find(a => a.cpf.replace(/\D/g, '') === cpfOriginal);
+                    if (aluno) {
+                        aluno.nome = nome;
+                    }
+                    showToast('Aluno atualizado com sucesso!');
+                }
+
+                // Atualizar interface
+                atualizarEstatisticas();
+                filtrarAlunos(statusFilter.value);
+                modalAddStudent.classList.add('hidden');
+                addStudentForm.reset();
+
+                // Resetar estado do formulário
+                const cpfInputReset = addStudentForm.querySelector('input[placeholder="000.000.000-00"]');
+                cpfInputReset.disabled = false;
+                cpfInputReset.required = true;
+                document.getElementById('cpfOriginal').value = '';
+
+                const submitButtonReset = addStudentForm.querySelector('button[type="submit"]');
+                submitButtonReset.textContent = 'Adicionar';
+                submitButtonReset.dataset.modo = 'criar';
+            } catch (error) {
+                console.error('Erro:', error);
+                showToast('Erro ao salvar aluno');
+            }
+        });
+
+        // Busca
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#studentTable tr');
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length === 0) return;
+
+                const name = cells[0]?.textContent.toLowerCase() || '';
+                const cpf = cells[1]?.textContent.toLowerCase() || '';
+                row.style.display = name.includes(query) || cpf.includes(query) ? '' : 'none';
+            });
+        });
+
+        // Filtro de status
+        statusFilter.addEventListener('change', (e) => {
+            filtrarAlunos(e.target.value);
+        });
+
+        // Mostrar toast
+        function showToast(message) {
+            toastMessage.textContent = message;
+            successToast.classList.remove('hidden', 'toast-exit');
+            successToast.classList.add('toast-success');
+
+            setTimeout(() => {
+                successToast.classList.add('toast-exit');
+                setTimeout(() => {
+                    successToast.classList.add('hidden');
+                }, 300);
+            }, 3000);
+        }
+
+        // Fechar modal ao clicar fora
+        modalAddStudent.addEventListener('click', (e) => {
+            if (e.target === modalAddStudent) {
+                modalAddStudent.classList.add('hidden');
+            }
+        });
+
+        // Inicializar dashboard ao carregar a página
+        document.addEventListener('DOMContentLoaded', inicializarDashboard);
+    </script>
+</body>
+
+</html>
