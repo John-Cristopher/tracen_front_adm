@@ -178,6 +178,11 @@ async function obterAluno(cpf) {
  */
 async function criarAluno(cpf, nome, observacao = '') {
     try {
+        // Validação de formato básico: CPF deve ter exatamente 11 dígitos numéricos
+        if (cpf.length !== 11) {
+            throw new Error('Segurança: O CPF deve conter exatamente 11 dígitos.');
+        }
+
         // 1. Busca a lista atual para validação de integridade (Segurança de Negócio)
         const alunosExistentes = await obterAlunos();
 
