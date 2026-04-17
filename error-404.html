@@ -169,7 +169,7 @@
                     </svg>
                     Voltar ao Login
                 </a>
-                <a href="#"
+                <a href="#" id="btn-reload"
                     class="flex-1 py-3 px-4 bg-white text-purple-600 border-2 border-purple-600 rounded-2xl font-bold hover:bg-purple-50 transition-all active:scale-95 text-center flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path
@@ -223,7 +223,7 @@
         }, 1000);
 
         // Botão atualizar
-        document.querySelectorAll('a[href="#"]')[0].addEventListener('click', (e) => {
+        document.getElementById('btn-reload').addEventListener('click', (e) => {
             e.preventDefault();
             location.reload();
         });
