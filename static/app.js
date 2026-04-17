@@ -190,6 +190,12 @@ const TracenApp = {
         const table = document.getElementById('studentTable');
         const staffName = document.getElementById('staffName');
 
+        // Verificação de Autenticação
+        if (!localStorage.getItem('staffToken')) {
+            window.location.href = 'staff-login.html';
+            return;
+        }
+
         const render = async (filter = '') => {
             const alunos = await window.TracenAPI.obterAlunos();
             table.innerHTML = alunos

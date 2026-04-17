@@ -315,6 +315,12 @@
 
     <script src="../static/api-handler.js"></script>
     <script>
+        // PROTEÇÃO DE ROTA IMEDIATA (Executa antes de renderizar o resto do JS)
+        if (!localStorage.getItem('staffToken') || !localStorage.getItem('staffUser')) {
+            window.location.replace('staff-login.html'); 
+            // Usamos .replace para que o usuário não consiga voltar para a página bloqueada usando o botão "voltar" do navegador
+        }
+
         // Elementos
         const btnLogout = document.getElementById('btnLogout');
         const btnAddStudent = document.getElementById('btnAddStudent');
@@ -342,8 +348,7 @@
 
         // Inicializar dashboard
         async function inicializarDashboard() {
-            // Recuperar dados do staff
-            const staffEmail = localStorage.getItem('staffUser') || 'diretor@tracen.com';
+            const staffEmail = localStorage.getItem('staffUser');
             staffData.email = staffEmail;
 
             if (staffEmail.includes('diretor')) {
