@@ -1,5 +1,5 @@
 // API Handler para Tracen Academy
-const API_BASE_URL = 'https://tracen-beta.vercel.app';
+const API_BASE_URL = 'https://tracel-beta.vercel.app';
 
 /**
  * Validar CPF do aluno
