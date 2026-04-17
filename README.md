@@ -38,68 +38,6 @@ O sistema adota múltiplas camadas de proteção para garantir a integridade dos
 
 *Nota: Nunca armazene chaves de API (`serviceAccountKey.json`) no repositório.*
 
-## 🧪 Testes
-
-O projeto inclui uma **suite completa de testes** com documentação, testes automatizados e checklist interativo.
-
-### 📋 Arquivos de Teste
-- **[PLANO-DE-TESTES.md](./PLANO-DE-TESTES.md)** - Documentação completa de todos os testes (10 testes manuais + 2 validações de API)
-- **[GUIA-DE-TESTES.md](./GUIA-DE-TESTES.md)** - Guia prático de como usar os testes automatizados
-- **[test-checklist.html](./test-checklist.html)** - Checklist interativo visual com acompanhamento em tempo real
-- **tests/** - Testes automatizados com Jest
-  - `api-handler.test.js` - Testes de validação da API (Testes 2.x e 3.x)
-  - `crud.test.js` - Testes do CRUD administrativo (Testes 1.x)
-  - `setup.js` - Configuração de mocks globais
-
-### 🚀 Executar Testes
-
-**Instalar dependências:**
-```bash
-npm install
-```
-
-**Executar testes automatizados:**
-```bash
-npm test
-```
-
-**Testes em modo watch (atualiza com mudanças):**
-```bash
-npm run test:watch
-```
-
-**Ver cobertura de testes:**
-```bash
-npm run test:coverage
-```
-
-### 📊 Cobertura de Testes
-
-| Módulo | Testes | Status |
-|--------|--------|--------|
-| **Frontend Admin (CRUD)** | 4 testes | ✅ Implementado |
-| **Catraca (Acesso)** | 4 testes | ✅ Implementado |
-| **API Backend** | 2 validações | ✅ Implementado |
-| **Total** | **10 testes** | ✅ Completo |
-
-### 📋 Testes Inclusos
-
-**Seção 1: Frontend Administrativo (CRUD)**
-- ✅ Teste 1.1: Cadastrando um Aluno (CREATE)
-- ✅ Teste 1.2: Consultando Alunos (READ)
-- ✅ Teste 1.3: Editando um Aluno (UPDATE)
-- ✅ Teste 1.4: Excluindo um Aluno (DELETE)
-
-**Seção 2: Tablet Catraca (Acesso)**
-- ✅ Teste 2.1: CPF Com Status ATIVO (Liberação)
-- ✅ Teste 2.2: CPF Com Status BLOQUEADO (Barramento)
-- ✅ Teste 2.3: CPF Inexistente (Tratamento de Erro)
-- ✅ Teste 2.4: Falha de Conexão (Resiliência)
-
-**Seção 3: API Backend**
-- ✅ Validação 3.1: JSON da Catraca
-- ✅ Validação 3.2: Persistência no Firebase
-
 ## Autores
 * **John** - *Desenvolvedor Front-end* - [GitHub](https://github.com/John-Cristopher)
 * **Vinicius** - *Desenvolvedor Back-end* - [GitHub](https://github.com/ViniciusMarioziOliveira)
